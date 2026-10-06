@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Café de especialidad en grano: Sidra, Geisha, Typica, Huehuetenango, Huila y Cerrado Mineiro. Pedí por WhatsApp.">
+<title>El Señor del Café — Café de Especialidad</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  @font-face{
+    font-family:'Lora';
+    src:url('fonts/lora-regular.woff') format('woff');
+    font-weight:400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'Lora';
+    src:url('fonts/lora-italic.woff') format('woff');
+    font-weight:400; font-style:italic; font-display:swap;
+  }
+  @font-face{
+    font-family:'Lora';
+    src:url('fonts/lora-bold.woff') format('woff');
+    font-weight:600 700; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'Work Sans';
+    src:url('fonts/worksans-regular.woff') format('woff');
+    font-weight:300 400; font-style:normal; font-display:swap;
+  }
+  @font-face{
+    font-family:'Work Sans';
+    src:url('fonts/worksans-italic.woff') format('woff');
+    font-weight:400; font-style:italic; font-display:swap;
+  }
+  @font-face{
+    font-family:'Work Sans';
+    src:url('fonts/worksans-bold.woff') format('woff');
+    font-weight:500 600; font-style:normal; font-display:swap;
+  }
+
+  :root{
+    --espresso:#231710;
+    --espresso-2:#2f2116;
+    --cream:#F3ECDE;
+    --cream-2:#EAE0CC;
+    --kraft:#C7A46B;
+    --gold:#A9843C;
+    --berry:#7C3B3E;
+    --line:rgba(243,236,222,0.14);
+  }
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--espresso);
+    font-family:'Work Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .font-display{font-family:'Lora', serif;}
+  .italic-display{font-family:'Lora', serif; font-style:italic; font-weight:400;}
+  .container-x{max-width:1240px; margin-left:auto; margin-right:auto; padding-left:1.5rem; padding-right:1.5rem;}
+  @media(min-width:768px){.container-x{padding-left:3rem; padding-right:3rem;}}
+
+  .placeholder-tile{
+    background-image:
+      linear-gradient(135deg, transparent 47%, var(--kraft) 47%, var(--kraft) 53%, transparent 53%);
+    background-size:14px 14px;
+    background-color:var(--cream-2);
+    border:1px solid rgba(35,23,16,0.15);
+  }
+
+  .grain::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+    pointer-events:none;
+  }
+
+  .fade-up{opacity:0; transform:translateY(18px); transition:opacity .8s ease, transform .8s ease;}
+  .fade-up.in{opacity:1; transform:translateY(0);}
+
+  .underline-grow{position:relative; text-decoration:none;}
+  .underline-grow::after{
+    content:""; position:absolute; left:0; bottom:-3px; width:100%; height:1px;
+    background:currentColor; transform:scaleX(0); transform-origin:left; transition:transform .4s ease;
+  }
+  .underline-grow:hover::after{transform:scaleX(1);}
+
+  .num-chip{
+    font-family:'Lora', serif; font-variant-numeric: oldstyle-nums;
+  }
+
+  ::selection{background:var(--berry); color:var(--cream);}
+
+  #mobile-menu.open{transform:translateX(0);}
+  .mobile-link{opacity:0.9; transition:opacity .2s ease;}
+  .mobile-link:hover{opacity:1; color:var(--kraft);}
+  #menu-toggle span{transition:transform .3s ease, opacity .3s ease;}
+  #menu-toggle.open span:first-child{transform:translateY(4px) rotate(45deg);}
+  #menu-toggle.open span:last-child{transform:translateY(-3px) rotate(-45deg);}
+
+  a, button{outline-offset:3px;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--kraft);}
+
+  @media (prefers-reduced-motion: reduce){
+    .fade-up{opacity:1 !important; transform:none !important; transition:none !important;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header id="nav" class="fixed top-0 left-0 right-0 z-50 transition-colors duration-500" style="background:transparent;">
+  <div class="container-x flex items-center justify-between py-5">
+    <a href="#hero" class="flex items-center gap-3">
+      <img src="images/logo-mark.webp" alt="El Señor del Café" class="h-10 w-10 object-contain">
+      <span class="font-display text-lg tracking-wide" id="nav-word" style="color:var(--cream)">El Señor del Café</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8 text-sm" id="nav-links" style="color:var(--cream)">
+      <a href="#productos" class="underline-grow">Cafés</a>
+      <a href="#destacado" class="underline-grow">Sidra Natural</a>
+      <a href="#empaque" class="underline-grow">Empaque</a>
+      <a href="#experiencia" class="underline-grow">Nosotros</a>
+      <a href="#contacto" class="underline-grow">Contacto</a>
+    </nav>
+    <a href="#productos" class="hidden md:inline-block text-sm px-5 py-2 rounded-full border transition-colors" style="border-color:var(--kraft); color:var(--cream)">
+      Conocé nuestros cafés
+    </a>
+    <button id="menu-toggle" aria-label="Abrir menú" aria-expanded="false" class="md:hidden flex flex-col gap-1.5 p-2 -mr-2">
+      <span class="block w-6 h-px" style="background:var(--cream);"></span>
+      <span class="block w-6 h-px" style="background:var(--cream);"></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" class="fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 text-xl font-display translate-x-full transition-transform duration-500 md:hidden" style="background:var(--espresso); color:var(--cream);">
+  <a href="#productos" class="mobile-link">Cafés</a>
+  <a href="#destacado" class="mobile-link">Sidra Natural</a>
+  <a href="#empaque" class="mobile-link">Empaque</a>
+  <a href="#experiencia" class="mobile-link">Nosotros</a>
+  <a href="#galeria" class="mobile-link">Galería</a>
+  <a href="#contacto" class="mobile-link">Contacto</a>
+</div>
+
+<!-- HERO -->
+<section id="hero" class="relative min-h-screen flex items-end overflow-hidden" style="background:var(--espresso);">
+  <video
+    class="absolute inset-0 w-full h-full object-cover"
+    autoplay muted loop playsinline
+    poster="images/hero-poster.jpg"
+    aria-hidden="true">
+    <source src="video/hero-coffee.mp4" type="video/mp4">
+  </video>
+  <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(20,13,9,0.55) 0%, rgba(20,13,9,0.35) 35%, rgba(20,13,9,0.88) 100%);"></div>
+  <div class="absolute inset-0 grain"></div>
+
+  <div class="container-x relative z-10 w-full pb-20 pt-40 md:pt-56">
+    <div class="grid md:grid-cols-12 gap-10 items-end">
+      <div class="md:col-span-7">
+        <img src="images/logo-mark.webp" alt="El Señor del Café" class="h-24 w-24 md:h-28 md:w-28 object-contain mb-8">
+        <h1 class="font-display leading-[0.95] text-cream" style="color:var(--cream); font-size:clamp(2.75rem, 7vw, 6rem); font-weight:400;">
+          El café que<br>
+          <span class="italic-display" style="color:var(--kraft)">preparás vos.</span>
+        </h1>
+        <p class="mt-8 max-w-md text-base md:text-lg" style="color:var(--cream-2); opacity:0.9;">
+          Café de especialidad, en grano y listo para tu método de preparación. Seleccionado finca por finca: cada bolsa cuenta el origen, la altura y el perfil exacto de lo que estás por tomar.
+        </p>
+        <div class="mt-10 flex flex-wrap items-center gap-5">
+          <a href="#productos" class="inline-flex items-center gap-3 px-7 py-3.5 rounded-full font-medium text-sm transition-transform hover:-translate-y-0.5" style="background:var(--kraft); color:var(--espresso);">
+            Conocé nuestros cafés
+          </a>
+          <a href="#contacto" class="text-sm underline-grow" style="color:var(--cream);">
+            Contacto y pedidos
+          </a>
+        </div>
+      </div>
+
+      <div class="md:col-span-5 flex justify-center md:justify-end">
+        <div class="relative rounded-3xl p-6 md:p-7" style="background:rgba(35,23,16,0.55); backdrop-filter:blur(10px); border:1px solid rgba(243,236,222,0.15);">
+          <p class="text-xs tracking-widest mb-4" style="color:var(--kraft);">DESTACADO</p>
+          <img src="images/sidra-bolsa.webp" alt="Café Sidra Natural — El Señor del Café" class="w-44 md:w-56 mx-auto drop-shadow-2xl">
+          <p class="font-display text-lg mt-4" style="color:var(--cream);">Sidra Natural</p>
+          <p class="text-xs mt-1" style="color:var(--cream-2); opacity:0.7;">Filandia, Quindío · 88.5 pts</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 z-10" style="color:var(--cream); opacity:0.55;">
+    <span class="text-[11px] tracking-widest">DESCUBRÍ MÁS</span>
+    <span class="block w-px h-8" style="background:currentColor;"></span>
+  </div>
+</section>
+
+<!-- MARQUEE STRIP -->
+<div class="py-4 overflow-hidden" style="background:var(--kraft); color:var(--espresso);">
+  <div class="marquee-track" style="animation: marquee 22s linear infinite;">
+    <div class="marquee-group">
+      <span class="mx-6">Café en grano de especialidad</span><span>·</span>
+      <span class="mx-6">Selección por finca</span><span>·</span>
+      <span class="mx-6">Tueste artesanal</span><span>·</span>
+      <span class="mx-6">Origen trazable</span><span>·</span>
+    </div>
+    <div class="marquee-group" aria-hidden="true">
+      <span class="mx-6">Café en grano de especialidad</span><span>·</span>
+      <span class="mx-6">Selección por finca</span><span>·</span>
+      <span class="mx-6">Tueste artesanal</span><span>·</span>
+      <span class="mx-6">Origen trazable</span><span>·</span>
+    </div>
+  </div>
+</div>
+<style>
+  .marquee-track{display:inline-flex;}
+  .marquee-group{display:flex; align-items:center; white-space:nowrap; font-size:0.875rem; font-weight:500; letter-spacing:0.02em;}
+  @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .variedad-badge{display:inline-block;margin-top:.6rem;padding:.35rem .9rem;border-radius:9999px;background:var(--berry);color:var(--cream);font-size:.8rem;font-weight:600;letter-spacing:.02em;}
+  .bag-img{display:block;height:320px;width:auto;max-width:100%;object-fit:contain;}
+  .media-card{position:relative;border-radius:1rem;overflow:hidden;background:var(--cream-2);}
+  .media-card img,.media-card video{width:100%;height:100%;object-fit:cover;display:block;}
+  .gal-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;grid-auto-rows:220px;}
+  .gal-grid .big{grid-column:span 2;grid-row:span 2;}
+  .gal-grid .tall{grid-row:span 2;}
+  .gal-grid .wide{grid-column:span 2;}
+  @media(min-width:768px){.gal-grid{grid-template-columns:repeat(4,1fr);grid-auto-rows:240px;}}
+</style>
+
+<!-- PRODUCTOS -->
+<section id="productos" class="py-28 md:py-36" style="background:var(--cream);">
+  <div class="container-x">
+    <div class="max-w-xl mb-16 md:mb-24 fade-up">
+      <p class="text-sm tracking-wide mb-3" style="color:var(--berry);">Nuestra selección</p>
+      <h2 class="font-display" style="font-size:clamp(2rem,4vw,3.25rem); font-weight:400;">
+        Seis orígenes,<br class="hidden md:block"> seis personalidades.
+      </h2>
+    </div>
+
+    <!-- Producto 1: Sidra Natural -->
+    <div class="grid md:grid-cols-12 gap-8 md:gap-16 items-center py-14 border-t fade-up" style="border-color:rgba(35,23,16,0.15);">
+      <div class="md:col-span-4">
+        <img src="images/sidra-bolsa.webp" alt="Sidra Natural — Colombia" class="bag-img mx-auto drop-shadow-xl">
+      </div>
+      <div class="md:col-span-8">
+        <p class="tracking-widest mb-3 leading-tight" style="color:var(--berry);">
+          <span class="block text-xl md:text-2xl font-semibold">COLOMBIA</span>
+          <span class="block text-sm mt-0.5">Filandia</span>
+          <span class="block text-xs opacity-70">Quindío</span>
+          <span class="variedad-badge">Variedad · Sidra</span>
+        </p>
+        <h3 class="font-display text-3xl md:text-4xl mb-3">Sidra Natural</h3>
+        <p class="max-w-lg mb-5" style="color:var(--espresso); opacity:0.75;">
+          Variedad Sidra procesada en natural con fermentación nitrogenada de 48 horas. Notas a fresa, hibisco, maracuyá y rosas; un retrogusto exótico, delicado y frutal.
+        </p>
+        <dl class="grid grid-cols-2 gap-x-10 gap-y-4 text-sm mb-6 max-w-md">
+          <div><dt class="opacity-50">Especie</dt><dd class="font-medium">Arábica</dd></div>
+          <div><dt class="opacity-50">Proceso</dt><dd class="font-medium">Natural, fermentación nitrogenada 48h</dd></div>
+          <div><dt class="opacity-50">Altura</dt><dd class="font-medium">1540 msnm</dd></div>
+          <div><dt class="opacity-50">Malla</dt><dd class="font-medium">15</dd></div>
+          <div><dt class="opacity-50">Puntaje</dt><dd class="font-medium">88.5</dd></div>
+          <div><dt class="opacity-50">Retrogusto</dt><dd class="font-medium">Exótico, delicado, frutal/floral</dd></div>
+        </dl>
+        <div class="flex flex-wrap gap-3 mb-6">
+          <span class="px-4 py-2 rounded-full border text-sm font-medium" style="border-color:var(--kraft);">125 g — $19.000</span>
+          <span class="px-4 py-2 rounded-full border text-sm font-medium" style="border-color:var(--kraft);">250 g — $36.000</span>
+        </div>
+        <a href="https://wa.me/5491143994494?text=Hola%21%20Quiero%20pedir%20el%20caf%C3%A9%20Sidra%20Natural." target="_blank" rel="noopener" class="text-sm underline-grow font-medium" style="color:var(--berry);">Pedir este café →</a>
+      </div>
+    </div>
+
+    <!-- Producto 2: Geisha Honey -->
+    <div class="grid md:grid-cols-12 gap-8 md:gap-16 items-center py-14 border-t fade-up" style="border-color:rgba(35,23,16,0.15);">
+      <div class="md:col-span-4 md:order-2">
+        <img src="images/gesha-bolsa.webp" alt="Geisha Honey — Colombia" class="bag-img mx-auto drop-shadow-xl">
+      </div>
+      <div class="md:col-span-8 md:order-1">
+        <p class="tracking-widest mb-3 leading-tight" style="color:var(--berry);">
+          <span class="block text-xl md:text-2xl font-semibold">COLOMBIA</span>
+          <span class="block text-sm mt-0.5">Tolima</span>
+          <span class="block text-xs opacity-70">Sur</span>
+          <span class="variedad-badge">Variedad · Geisha</span>
+        </p>
+        <h3 class="font-display text-3xl md:text-4xl mb-3">Geisha Honey</h3>
+        <p class="max-w-lg mb-5" style="color:var(--espresso); opacity:0.75;">
+          Café de Tolima Sur, Colombia. Finca La Floresta, productor Fermín Gallego. Proceso honey; notas a flor de jazmín, bergamota y caramelo, con perfil limpio y dulce.
+        </p>
+        <dl class="grid grid-cols-2 gap-x-10 gap-y-4 text-sm mb-6 max-w-md">
+          <div><dt class="opacity-50">Especie</dt><dd class="font-medium">Arábica</dd></div>
+          <div><dt class="opacity-50">Proceso</dt><dd class="font-medium">Honey</dd></div>
+          <div><dt class="opacity-50">Altura</dt><dd class="font-medium">1870–1900 msnm</dd></div>
+          <div><dt class="opacity-50">Finca</dt><dd class="font-medium">La Floresta</dd></div>
+          <div><dt class="opacity-50">Puntaje</dt><dd class="font-medium">87.75–88</dd></div>
+          <div><dt class="opacity-50">Perfil</dt><dd class="font-medium">Limpio y dulce</dd></div>
+        </dl>
+        <div class="flex flex-wrap gap-3 mb-6">
+          <span class="px-4 py-2 rounded-full border text-sm font-medium" style="border-color:var(--kraft);">125 g — $19.000</span>
+          <span class="px-4 py-2 rounded-full border text-sm font-medium" style="border-color:var(--kraft);">250 g — $36.000</span>
+        </div>
+        <a href="https://wa.me/5491143994494?text=Hola%21%20Quiero%20pedir%20el%20caf%C3%A9%20Geisha%20Honey." target="_blank" rel="noopener" class="text-sm underline-grow font-medium" style="color:var(--berry);">Pedir este café →</a>
+      </div>
+    </div>
+
+    <!-- Producto 3: Typica Honey -->
+    <div class="grid md:grid-cols-12 gap-8 md:gap-16 items-center py-14 border-t fade-up" style="border-color:rgba(35,23,16,0.15);">
+      <div class="md:col-span-4">
+        <img src="images/typica-bolsa.webp" alt="Typica Honey — Colombia" class="bag-img mx-auto drop-shadow-xl">
+      </div>
+      <div class="md:col-span-8">
+        <p class="tracking-widest mb-3 leading-tight" style="color:var(--berry);">
+          <span class="block text-xl md:text-2xl font-semibold">COLOMBIA</span>
+          <span class="block text-sm mt-0.5">Tolima</span>
+          <span class="variedad-badge">Variedad · Typica</span>
+        </p>
+        <h3 class="font-display text-3xl md:text-4xl mb-3">Typica Honey</h3>
+        <p class="max-w-lg mb-5" style="color:var(--espresso); opacity:0.75;">
+          Café de Tolima, Colombia. Productor Wilson Pérez Marroquín. Proceso honey; notas a flor de azahar, caña dulce, mandarina madura y caramelo.
+        </p>
+        <dl class="grid grid-cols-2 gap-x-10 gap-y-4 text-sm mb-6 max-w-md">
+          <div><dt class="opacity-50">Especie</dt><dd class="font-medium">Arábica</dd></div>
+          <div><dt class="opacity-50">Proceso</dt><dd class="font-medium">Honey</dd></div>
+          <div><dt class="opacity-50">Altura</dt><dd class="font-medium">1800 msnm</dd></div>
+          <div><dt class="opacity-50">Productor</dt><dd class="font-medium">Wilson Pérez Marroquín</dd></div>
+          <div class="col-span-2"><dt class="opacity-50">Notas</dt><dd class="font-medium">Flor de azahar, caña dulce, mandarina madura y caramelo</dd></div>
+        </dl>
+        <div class="flex flex-wrap gap-3 mb-6">
+          <span class="px-4 py-2 rounded-full border text-sm font-medium" style="border-color:var(--kraft);">125 g — $19.000</span>
+          <span class="px-4 py-2 rounded-full border text-sm font-medium" style="border-color:var(--kraft);">250 g — $36.000</span>
+        </div>
+        <a href="https://wa.me/5491143994494?text=Hola%21%20Quiero%20pedir%20el%20caf%C3%A9%20Typica%20Honey." target="_blank" rel="noopener" class="text-sm underline-grow font-medium" style="color:var(--berry);">Pedir este café →</a>
+      </div>
+    </div>
+
+    <!-- Producto 4: Huehuetenango -->
+    <div class="grid md:grid-cols-12 gap-8 md:gap-16 items-center py-14 border-t fade-up" style="border-color:rgba(35,23,16,0.15);">
+      <div class="md:col-span-4 md:order-2">
+        <img src="images/guatemala-bolsa.webp" alt="Huehuetenango — Guatemala" class="bag-img mx-auto drop-shadow-xl">
+      </div>
+      <div class="md:col-span-8 md:order-1">
+        <p class="tracking-widest mb-3 leading-tight" style="color:var(--berry);">
+          <span class="block text-xl md:text-2xl font-semibold">GUATEMALA</span>
+          <span class="block text-sm mt-0.5">Huehuetenango</span>
+          <span class="variedad-badge">Variedad · Bourbon, Marsellesa, Geisha</span>
+        </p>
+        <h3 class="font-display text-3xl md:text-4xl mb-3">Huehuetenango</h3>
+        <p class="max-w-lg mb-5" style="color:var(--espresso); opacity:0.75;">
+          Café de Huehuetenango, Guatemala. Mezcla de variedades procesadas en cereja despolpado, con aroma cítrico y notas de vino, nuez y frutos rojos. Sabor intenso y frutal.
+        </p>
+        <dl class="grid grid-cols-2 gap-x-10 gap-y-4 text-sm mb-6 max-w-md">
+          <div><dt class="opacity-50">Especie</dt><dd class="font-medium">Arábica</dd></div>
+          <div><dt class="opacity-50">Proceso</dt><dd class="font-medium">Cereja despolpado</dd></div>
+          <div><dt class="opacity-50">Altura</dt><dd class="font-medium">1500 msnm</dd></div>
+          <div><dt class="opacity-50">Malla</dt><dd class="font-medium">+15</dd></div>
+          <div><dt class="opacity-50">Puntaje</dt><dd class="font-medium">85.25</dd></div>
+          <div><dt class="opacity-50">Sabor</dt><dd class="font-medium">Intenso, frutal</dd></div>
+        </dl>
+        <div class="flex flex-wrap gap-3 mb-6">
+          <span class="px-4 py-2 rounded-full border text-sm font-medium" style="border-color:var(--kraft);">125 g — $19.000</span>
+          <span class="px-4 py-2 rounded-full border text-sm font-medium" style="border-color:var(--kraft);">250 g — $36.000</span>
+        </div>
+        <a href="https://wa.me/5491143994494?text=Hola%21%20Quiero%20pedir%20el%20caf%C3%A9%20Huehuetenango." target="_blank" rel="noopener" class="text-sm underline-grow font-medium" style="color:var(--berry);">Pedir este café →</a>
+      </div>
+    </div>
+
+    <!-- Producto 5: Huila -->
+    <div class="grid md:grid-cols-12 gap-8 md:gap-16 items-center py-14 border-t fade-up" style="border-color:rgba(35,23,16,0.15);">
+      <div class="md:col-span-4">
+        <img src="images/huila-bolsa.webp" alt="Huila — Colombia" class="bag-img mx-auto drop-shadow-xl">
+      </div>
+      <div class="md:col-span-8">
+        <p class="tracking-widest mb-3 leading-tight" style="color:var(--berry);">
+          <span class="block text-xl md:text-2xl font-semibold">COLOMBIA</span>
+          <span class="block text-sm mt-0.5">Huila</span>
+          <span class="variedad-badge">Variedad · Caturra y Castillo</span>
+        </p>
+        <h3 class="font-display text-3xl md:text-4xl mb-3">Huila</h3>
+        <p class="max-w-lg mb-5" style="color:var(--espresso); opacity:0.75;">
+          Café de Huila, Colombia. Nuestro blend base para espresso: combinamos la dulzura de la Caturra con el cuerpo y la crema del Castillo. Notas a chocolate, caramelo, panela y naranja; cuerpo cremoso y crema persistente. Ideal con y sin leche.
+        </p>
+        <dl class="grid grid-cols-2 gap-x-10 gap-y-4 text-sm mb-6 max-w-md">
+          <div><dt class="opacity-50">Especie</dt><dd class="font-medium">Arábica</dd></div>
+          <div><dt class="opacity-50">Proceso</dt><dd class="font-medium">Lavado</dd></div>
+          <div><dt class="opacity-50">Altura</dt><dd class="font-medium">1700 msnm</dd></div>
+          <div><dt class="opacity-50">Uso</dt><dd class="font-medium">Espresso</dd></div>
+          <div><dt class="opacity-50">Puntaje</dt><dd class="font-medium">85+ SCA</dd></div>
+          <div><dt class="opacity-50">Notas</dt><dd class="font-medium">Chocolate, caramelo, panela, naranja</dd></div>
+        </dl>
+        <div class="flex flex-wrap gap-3 mb-6">
+          <span class="px-4 py-2 rounded-full border text-sm font-medium" style="border-color:var(--kraft);">125 g — $19.000</span>
+          <span class="px-4 py-2 rounded-full border text-sm font-medium" style="border-color:var(--kraft);">250 g — $36.000</span>
+        </div>
+        <a href="https://wa.me/5491143994494?text=Hola%21%20Quiero%20pedir%20el%20caf%C3%A9%20Huila." target="_blank" rel="noopener" class="text-sm underline-grow font-medium" style="color:var(--berry);">Pedir este café →</a>
+      </div>
+    </div>
+
+    <!-- Producto 6: Cerrado Mineiro -->
+    <div class="grid md:grid-cols-12 gap-8 md:gap-16 items-center py-14 border-t border-b fade-up" style="border-color:rgba(35,23,16,0.15);">
+      <div class="md:col-span-4 md:order-2">
+        <img src="images/brasil-bolsa.webp" alt="Cerrado Mineiro — Brasil" class="bag-img mx-auto drop-shadow-xl">
+      </div>
+      <div class="md:col-span-8 md:order-1">
+        <p class="tracking-widest mb-3 leading-tight" style="color:var(--berry);">
+          <span class="block text-xl md:text-2xl font-semibold">BRASIL</span>
+          <span class="block text-sm mt-0.5">Cerrado Mineiro</span>
+          <span class="variedad-badge">Variedad · Bourbon y Catuaí</span>
+        </p>
+        <h3 class="font-display text-3xl md:text-4xl mb-3">Cerrado Mineiro</h3>
+        <p class="max-w-lg mb-5" style="color:var(--espresso); opacity:0.75;">
+          Café de Cerrado Mineiro, Brasil. Proceso natural pulpeado, entre 1100 y 1300 msnm.
+        </p>
+        <dl class="grid grid-cols-2 gap-x-10 gap-y-4 text-sm mb-6 max-w-md">
+          <div><dt class="opacity-50">Especie</dt><dd class="font-medium">Arábica</dd></div>
+          <div><dt class="opacity-50">Proceso</dt><dd class="font-medium">Natural pulpeado</dd></div>
+          <div><dt class="opacity-50">Altura</dt><dd class="font-medium">1100–1300 msnm</dd></div>
+          <div><dt class="opacity-50">Puntaje</dt><dd class="font-medium">85</dd></div>
+        </dl>
+        <div class="flex flex-wrap gap-3 mb-6">
+          <span class="px-4 py-2 rounded-full border text-sm font-medium" style="border-color:var(--kraft);">125 g — $19.000</span>
+          <span class="px-4 py-2 rounded-full border text-sm font-medium" style="border-color:var(--kraft);">250 g — $36.000</span>
+        </div>
+        <a href="https://wa.me/5491143994494?text=Hola%21%20Quiero%20pedir%20el%20caf%C3%A9%20Cerrado%20Mineiro." target="_blank" rel="noopener" class="text-sm underline-grow font-medium" style="color:var(--berry);">Pedir este café →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DESTACADO -->
+<section id="destacado" class="py-28 md:py-36 relative overflow-hidden" style="background:var(--espresso); color:var(--cream);">
+  <div class="absolute inset-0 grain"></div>
+  <div class="container-x relative z-10">
+    <div class="grid md:grid-cols-12 gap-14 items-center">
+      <div class="md:col-span-5 fade-up order-2 md:order-1">
+        <p class="text-sm tracking-wide mb-4" style="color:var(--kraft);">Café destacado</p>
+        <h2 class="font-display mb-6" style="font-size:clamp(2.25rem,4.5vw,3.5rem); font-weight:400;">
+          Sidra Natural, <span class="italic-display" style="color:var(--kraft)">Finca La Coqueta</span>
+        </h2>
+        <p class="mb-8" style="color:var(--cream-2); opacity:0.85; max-width:34ch;">
+          Cultivado por Juan Sebastián Bustos Herrera en Filandia, Quindío. Un lote de especialidad puntuado en 88.5, con fermentación nitrogenada de 48 horas que resalta sus notas frutales y florales.
+        </p>
+
+        <div class="grid grid-cols-2 gap-x-8 gap-y-5 mb-10 max-w-sm text-sm">
+          <div><p class="opacity-50 mb-1">Productor</p><p class="font-medium">Juan Sebastián Bustos Herrera</p></div>
+          <div><p class="opacity-50 mb-1">Finca</p><p class="font-medium">La Coqueta</p></div>
+          <div><p class="opacity-50 mb-1">Variedad</p><p class="font-medium">Sidra</p></div>
+          <div><p class="opacity-50 mb-1">Altitud</p><p class="font-medium">1540 msnm</p></div>
+          <div><p class="opacity-50 mb-1">Proceso</p><p class="font-medium">Natural, fermentación nitrogenada 48h</p></div>
+          <div><p class="opacity-50 mb-1">Puntaje</p><p class="font-medium">88.5</p></div>
+        </div>
+
+        <p class="text-sm" style="color:var(--kraft);">
+          Notas sensoriales: fresa, hibisco, maracuyá y rosas.<br>
+          Retrogusto: exótico, delicado, frutal / floral.
+        </p>
+      </div>
+
+      <div class="md:col-span-7 order-1 md:order-2 fade-up">
+        <div class="relative">
+          <img src="images/sidra-bolsa.webp" alt="Sidra Natural" class="w-full max-w-md mx-auto drop-shadow-2xl">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMPAQUE -->
+<section id="empaque" class="py-24 md:py-32" style="background:var(--cream);">
+  <div class="container-x">
+    <div class="grid md:grid-cols-12 gap-10 items-center">
+      <div class="md:col-span-5 fade-up">
+        <p class="text-sm tracking-wide mb-3" style="color:var(--berry);">Empaque premium</p>
+        <h2 class="font-display mb-5" style="font-size:clamp(1.75rem,3.5vw,2.5rem); font-weight:400;">
+          Cuidamos el café hasta que llega a tu casa.
+        </h2>
+        <p style="opacity:0.7; max-width:40ch; margin-bottom:1.75rem;">
+          Cada bolsa está pensada para conservar el aroma y la frescura del café desde el envasado hasta que la abrís.
+        </p>
+        <img src="images/empaque-bolsas.webp" alt="Bolsas premium El Señor del Café" class="rounded-2xl w-full max-w-xs">
+      </div>
+
+      <div class="md:col-span-7 fade-up">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <div class="p-5 rounded-2xl border text-center" style="border-color:rgba(35,23,16,0.15);">
+            <p class="font-display text-lg mb-1">Trilaminada</p>
+            <p class="text-xs opacity-60">140 micrones</p>
+          </div>
+          <div class="p-5 rounded-2xl border text-center" style="border-color:rgba(35,23,16,0.15);">
+            <p class="font-display text-lg mb-1">Válvula</p>
+            <p class="text-xs opacity-60">Desgasificadora</p>
+          </div>
+          <div class="p-5 rounded-2xl border text-center" style="border-color:rgba(35,23,16,0.15);">
+            <p class="font-display text-lg mb-1">Zipper</p>
+            <p class="text-xs opacity-60">Hermético</p>
+          </div>
+          <div class="p-5 rounded-2xl border text-center" style="border-color:rgba(35,23,16,0.15);">
+            <p class="font-display text-lg mb-1">Base</p>
+            <p class="text-xs opacity-60">Stand-up</p>
+          </div>
+          <div class="p-5 rounded-2xl border text-center" style="border-color:rgba(35,23,16,0.15);">
+            <p class="font-display text-lg mb-1">Apertura</p>
+            <p class="text-xs opacity-60">Fácil, con muesca</p>
+          </div>
+          <div class="p-5 rounded-2xl border text-center" style="border-color:var(--kraft); background:rgba(199,164,107,0.08);">
+            <p class="font-display text-lg mb-1">Certificada</p>
+            <p class="text-xs opacity-60">Por ANMAT</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCIA -->
+<section id="experiencia" class="py-28 md:py-36" style="background:var(--cream-2);">
+  <div class="container-x">
+    <div class="grid md:grid-cols-12 gap-14 items-center mb-16">
+      <div class="md:col-span-6 fade-up">
+        <p class="text-sm tracking-wide mb-3" style="color:var(--berry);">Quiénes somos</p>
+        <h2 class="font-display mb-6" style="font-size:clamp(2rem,4vw,3.25rem); font-weight:400;">
+          Dos amigos de San Vicente,<br class="hidden md:block"> café de verdad.
+        </h2>
+        <p style="opacity:0.75; max-width:52ch;">
+          Somos dos amigos de San Vicente que decidimos traer a Argentina lo que no conseguíamos acá: café de especialidad de verdad. Importamos directo de origen — Colombia, Brasil y Guatemala — y trabajamos con micro-lotes de varietales exóticos como Geisha, Sidra y Caturra, además de los mejores granos de Brasil y Guatemala. Café 100% en grano, tostado fresco.
+        </p>
+        <p class="mt-4 italic-display text-lg" style="color:var(--berry);">
+          No es el café del súper. Es café premium para los que saben disfrutar una buena taza.
+        </p>
+      </div>
+      <div class="md:col-span-6 fade-up">
+        <img src="images/real-finca-valle.webp" alt="Cafetales en las montañas de la finca" class="w-full rounded-2xl object-cover" style="max-height:420px;">
+      </div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="p-6 rounded-2xl border fade-up" style="border-color:var(--kraft); background:var(--cream);">
+        <p class="italic-display text-xl mb-2">Historia</p>
+        <p class="text-sm opacity-70">Dos amigos de San Vicente que importan café de especialidad directo de origen.</p>
+      </div>
+      <div class="p-6 rounded-2xl border fade-up" style="border-color:var(--kraft); background:var(--cream);">
+        <p class="italic-display text-xl mb-2">Origen directo</p>
+        <p class="text-sm opacity-70">Importamos de Colombia, Brasil y Guatemala, seleccionando cada lote por finca.</p>
+      </div>
+      <div class="p-6 rounded-2xl border fade-up" style="border-color:var(--kraft); background:var(--cream);">
+        <p class="italic-display text-xl mb-2">Micro-lotes</p>
+        <p class="text-sm opacity-70">Varietales exóticos como Geisha, Sidra y Caturra, junto a los mejores granos de Brasil y Guatemala.</p>
+      </div>
+      <div class="p-6 rounded-2xl border fade-up" style="border-color:var(--kraft); background:var(--cream);">
+        <p class="italic-display text-xl mb-2">Tostado fresco</p>
+        <p class="text-sm opacity-70">Café 100% en grano, tostado fresco para que lo prepares en tu casa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section id="galeria" class="py-28 md:py-36" style="background:var(--cream);">
+  <div class="container-x">
+    <div class="max-w-xl mb-14 fade-up">
+      <p class="text-sm tracking-wide mb-3" style="color:var(--berry);">Galería</p>
+      <h2 class="font-display" style="font-size:clamp(2rem,4vw,3.25rem); font-weight:400;">
+        El café, de cerca.
+      </h2>
+    </div>
+
+    <div class="gal-grid fade-up">
+      <div class="media-card big"><img src="images/marketing-huehuetenango.webp" alt="El Señor del Café — Huehuetenango" loading="lazy"></div>
+      <div class="media-card"><img src="images/real-cerezas-racimo.webp" alt="Cerezas de café maduras en la planta" loading="lazy"></div>
+      <div class="media-card"><img src="images/real-cerezas-maduras.webp" alt="Racimos de café rojo" loading="lazy"></div>
+      <div class="media-card tall"><video src="video/finca-1.mp4" poster="images/finca-1-poster.jpg" controls playsinline preload="none" aria-label="Video de la finca"></video></div>
+      <div class="media-card tall"><img src="images/real-cosecha-lona.webp" alt="Cosecha de café sobre lona en la ladera" loading="lazy"></div>
+      <div class="media-card"><img src="images/real-finca-valle.webp" alt="Cafetales en las montañas" loading="lazy"></div>
+      <div class="media-card"><img src="images/real-secado-invernadero.webp" alt="Secado de café en invernadero" loading="lazy"></div>
+      <div class="media-card wide"><video src="video/finca-2.mp4" poster="images/finca-2-poster.jpg" controls playsinline preload="none" aria-label="Video del proceso del café"></video></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="py-28 md:py-36" style="background:var(--espresso); color:var(--cream);">
+  <div class="container-x">
+    <div class="grid md:grid-cols-2 gap-14 items-center">
+      <div class="fade-up">
+        <p class="text-sm tracking-wide mb-3" style="color:var(--kraft);">Contacto y pedidos</p>
+        <h2 class="font-display mb-6" style="font-size:clamp(2rem,4vw,3.25rem); font-weight:400;">
+          Pedí tu café.
+        </h2>
+        <p class="mb-10 max-w-sm" style="color:var(--cream-2); opacity:0.8;">
+          Café de especialidad en bolsa, listo para pedir. Escribinos y coordinamos la entrega.
+        </p>
+
+        <dl class="space-y-7 text-sm">
+          <div class="pb-6 border-b" style="border-color:var(--line);">
+            <dt class="opacity-50 mb-1">WhatsApp</dt>
+            <dd><a href="https://wa.me/5491143994494" target="_blank" rel="noopener" class="underline-grow" style="color:var(--kraft);">+54 9 11 4399-4494</a></dd>
+          </div>
+          <div class="pb-6 border-b" style="border-color:var(--line);">
+            <dt class="opacity-50 mb-1">Instagram</dt>
+            <dd><a href="https://www.instagram.com/elsr.delcafe" target="_blank" rel="noopener" class="underline-grow" style="color:var(--kraft);">@elsr.delcafe</a></dd>
+          </div>
+          <div class="pb-6 border-b" style="border-color:var(--line);">
+            <dt class="opacity-50 mb-1">Facebook</dt>
+            <dd><a href="https://www.facebook.com/share/1Guq2y3WBM/" target="_blank" rel="noopener" class="underline-grow" style="color:var(--kraft);">El Señor del Café</a></dd>
+          </div>
+          <div class="pb-6 border-b" style="border-color:var(--line);">
+            <dt class="opacity-50 mb-1">Envíos</dt>
+            <dd style="color:var(--kraft);">Consultá por WhatsApp</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="fade-up flex justify-center">
+        <img src="images/sidra-bolsa.webp" alt="El Señor del Café" class="w-56 md:w-72 drop-shadow-2xl">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="relative py-32 md:py-44 overflow-hidden" style="background:var(--berry); color:var(--cream);">
+  <div class="absolute inset-0 grain"></div>
+  <div class="container-x relative z-10 text-center fade-up">
+    <p class="italic-display" style="font-size:clamp(2.25rem,6vw,4.5rem); font-weight:400;">
+      Una taza a la vez.
+    </p>
+    <a href="#productos" class="inline-flex mt-10 items-center gap-3 px-8 py-4 rounded-full font-medium text-sm transition-transform hover:-translate-y-0.5" style="background:var(--cream); color:var(--berry);">
+      Conocé nuestros cafés
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="pt-20 pb-10" style="background:var(--espresso); color:var(--cream-2);">
+  <div class="container-x">
+    <div class="grid md:grid-cols-12 gap-12 pb-14 border-b" style="border-color:var(--line);">
+      <div class="md:col-span-5">
+        <div class="flex items-center gap-3 mb-5">
+          <img src="images/logo-mark.webp" alt="El Señor del Café" class="h-10 w-10 object-contain">
+          <span class="font-display text-lg" style="color:var(--cream)">El Señor del Café</span>
+        </div>
+        <p class="text-sm max-w-xs opacity-60">
+          Café de especialidad seleccionado finca por finca, con origen y proceso trazables en cada bolsa.
+        </p>
+      </div>
+
+      <div class="md:col-span-3">
+        <p class="text-xs tracking-widest opacity-50 mb-4">NAVEGACIÓN</p>
+        <ul class="space-y-3 text-sm">
+          <li><a href="#productos" class="underline-grow opacity-80">Nuestros cafés</a></li>
+          <li><a href="#destacado" class="underline-grow opacity-80">Sidra Natural</a></li>
+          <li><a href="#empaque" class="underline-grow opacity-80">Empaque</a></li>
+          <li><a href="#experiencia" class="underline-grow opacity-80">Nuestra experiencia</a></li>
+          <li><a href="#galeria" class="underline-grow opacity-80">Galería</a></li>
+          <li><a href="#contacto" class="underline-grow opacity-80">Contacto</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-4">
+        <p class="text-xs tracking-widest opacity-50 mb-4">CONTACTO</p>
+        <ul class="space-y-3 text-sm">
+          <li class="flex justify-between gap-4"><span class="opacity-60">WhatsApp</span><a href="https://wa.me/5491143994494" target="_blank" rel="noopener" class="underline-grow" style="color:var(--kraft);">+54 9 11 4399-4494</a></li>
+          <li class="flex justify-between gap-4"><span class="opacity-60">Instagram</span><a href="https://www.instagram.com/elsr.delcafe" target="_blank" rel="noopener" class="underline-grow" style="color:var(--kraft);">@elsr.delcafe</a></li>
+          <li class="flex justify-between gap-4"><span class="opacity-60">Facebook</span><a href="https://www.facebook.com/share/1Guq2y3WBM/" target="_blank" rel="noopener" class="underline-grow" style="color:var(--kraft);">El Señor del Café</a></li>
+          <li class="flex justify-between gap-4"><span class="opacity-60">Envíos</span><span style="color:var(--kraft);">Consultá por WhatsApp</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs opacity-40">
+      <p>© 2026 El Señor del Café. Café de especialidad.</p>
+      <p>Diseño y desarrollo — ORVIA</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav background on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      nav.style.background = 'rgba(35,23,16,0.92)';
+      nav.style.backdropFilter = 'blur(8px)';
+    } else {
+      nav.style.background = 'transparent';
+      nav.style.backdropFilter = 'none';
+    }
+  });
+
+  // Mobile menu
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  function closeMenu(){
+    mobileMenu.classList.remove('open');
+    menuToggle.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded','false');
+  }
+  menuToggle.addEventListener('click', () => {
+    const willOpen = !mobileMenu.classList.contains('open');
+    mobileMenu.classList.toggle('open');
+    menuToggle.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', String(willOpen));
+  });
+  document.querySelectorAll('.mobile-link').forEach(a => a.addEventListener('click', closeMenu));
+
+  // Fade up on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
